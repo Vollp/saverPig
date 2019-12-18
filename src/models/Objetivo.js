@@ -1,14 +1,15 @@
 const db = require("../utils/database");
 
-const register = async (valObjetivo, descricao, idCliente) => {
-  const data = await db.query(
-    `insert into objetivo(vlr_objetivo, descricao, id_cliente) values(${valObjetivo}, ${descricao}, ${idCliente});`
-  );
+const register = async (valObjetivo, descricao) => {
+  try {
+    const data = await db.query(
+      `insert into objetivo(vlr_objetivo, descricao) values(${valObjetivo}, '${descricao}') returning *;`
+    );
 
-  return {
-      data: data,
-      status: 200
-  };
+    return data
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 module.exports = { register };

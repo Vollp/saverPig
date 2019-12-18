@@ -1,15 +1,15 @@
 module.exports = {
   port: 3000,
   database: {
-    server: "thunderbolts.c4ctnbkjnd6p.us-east-1.rds.amazonaws.com",
-    user: "admin",
-    password: "Gjet84Wh95ds",
-    database: "thunderbolts",
-    options: {
-      encrypt: true
+    poolSettings: {
+      host: "localhost",
+      user: "postgres",
+      password: "admin",
+      database: "postgres",
+      port: 5432,
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000
     }
-  },
-  security: {
-    key: "CHAVE_SEGURANCA"
   }
 };

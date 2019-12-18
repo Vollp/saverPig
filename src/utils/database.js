@@ -1,31 +1,18 @@
-const mssql = require("mssql");
+const { Pool } = require("pg");
 
-const isNull = require("./isNull");
-const config = require("../config/config");
+const config = require('../config/config');
 
-const query = queryString => {
-  if (isNull(queryString)) {
-    return null;
-  } else {
-    mssql.close();
+const pool = new Pool(config.database.poolSettings);
 
-    return new Promise((resolve, reject) => {
-      mssql
-        .connect(config.database)
-        .then(pool => {
-          return pool.request().query(queryString);
-        })
-        .then(results => {
-          mssql.close();
-          resolve(results);
-        })
-        .catch(error => {
-          console.error(`Erro ao tentar consultar o banco: ${error}`);
-          mssql.close();
-          reject(error);
-        });
-    });
+const query = async (sql) => {
+  const client = await pool.connect();
+
+  try{
+    const res = await client.query(sql);
+    return res.rows;
+  } finally {
+    client.release();
   }
-};
+}
 
 module.exports = { query };
