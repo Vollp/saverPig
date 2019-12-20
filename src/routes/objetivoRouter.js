@@ -10,11 +10,18 @@ router.post("/", async (req, res) => {
   res.status(200).json(response);
 });
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   const { idCliente } = req.body;
-  const response = Objetivo.search(idCliente);
+  const response = await Objetivo.search(idCliente);
 
-  res.status(response.status).json(response.data);
+  res.status(200).json(response);
+});
+
+router.get("/search-number", async (req, res) => {
+  const { idCliente, numObjetivo } = req.body;
+  const response = await Objetivo.searchForNumber(idCliente, numObjetivo);
+
+  res.status(200).json(response)
 });
 
 module.exports = router;
